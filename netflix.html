@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Netflix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-gray: #303030;
+            --netflix-light-gray: #757575;
+            --netflix-white: #fff;
+            --primary: #0ff;
+            --dark: #111;
+            --light: #fff;
+            --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #000;
+            color: var(--netflix-white);
+            overflow-x: hidden;
+        }
+        .login-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            padding: 20px;
+        }
+
+        .netflix-logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        .login-box {
+            background-color: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            color: var(--netflix-white);
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .input-group label {
+            color: var(--netflix-light-gray);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #333;
+            border: none;
+            border-radius: 4px;
+            color: var(--netflix-white);
+            font-size: 16px;
+        }
+
+        input:focus {
+            background-color: #454545;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--netflix-red);
+            border: none;
+            border-radius: 4px;
+            color: var(--netflix-white);
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #f40612;
+        }
+        .signup-container {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            color: var(--netflix-white);
+            padding: 20px;
+        }
+
+        .signup-box {
+            background-color: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .signup-box h2 {
+            color: var(--netflix-white);
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .signup-box p {
+            color: var(--netflix-light-gray);
+            text-align: left;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .signup-steps {
+            display: flex;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+
+        .step {
+            width: 30%;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 25px;
+            height: 25px;
+            background-color: var(--netflix-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            color: var(--netflix-light-gray);
+            font-size: 12px;
+        }
+
+        .step.active .step-number {
+            background-color: var(--netflix-red);
+            color: white;
+        }
+
+        .step-title {
+            font-size: 10px;
+            color: var(--netflix-light-gray);
+        }
+
+        .step.active .step-title {
+            color: white;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: -35%;
+            width: 70%;
+            height: 2px;
+            background-color: var(--netflix-gray);
+        }
+
+        .step.active:not(:last-child)::after {
+            background-color: var(--netflix-red);
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .plan-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .plan-option {
+            border: 1px solid var(--netflix-gray);
+            border-radius: 4px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .plan-option:hover {
+            border-color: var(--netflix-light-gray);
+        }
+
+        .plan-option.selected {
+            border-color: var(--netflix-red);
+            background-color: rgba(229, 9, 20, 0.1);
+        }
+
+        .plan-option h3 {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .plan-option .price {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .plan-option .description {
+            font-size: 12px;
+            color: var(--netflix-light-gray);
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .payment-method {
+            border: 1px solid var(--netflix-gray);
+            border-radius: 4px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-method:hover {
+            border-color: var(--netflix-light-gray);
+        }
+
+        .payment-method.selected {
+            border-color: var(--netflix-red);
+            background-color: rgba(229, 9, 20, 0.1);
+        }
+
+        .payment-method i {
+            font-size: 20px;
+        }
+
+        .payment-method .details h3 {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .payment-method .details p {
+            font-size: 12px;
+            color: var(--netflix-light-gray);
+            margin: 0;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--netflix-light-gray);
+            color: var(--netflix-light-gray);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .terms {
+            font-size: 10px;
+            color: var(--netflix-light-gray);
+            margin-top: 15px;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .terms input {
+            margin-right: 8px;
+            margin-top: 2px;
+        }
+
+        .terms a {
+            color: var(--netflix-white);
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            color: var(--netflix-light-gray);
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        .profiles-container {
+            display: none;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            padding-top: 80px;
+        }
+
+        .profiles-container h1 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .profiles-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 100%;
+            margin: 0 auto 40px;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: calc(50% - 10px);
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            color: var(--netflix-light-gray);
+            font-size: 14px;
+        }
+
+        .profile:hover .profile-name {
+            color: white;
+        }
+
+        .manage-profiles {
+            border: 1px solid var(--netflix-light-gray);
+            color: var(--netflix-light-gray);
+            padding: 8px 15px;
+            font-size: 14px;
+            background: transparent;
+            cursor: pointer;
+            width: auto;
+            margin: 0 auto;
+        }
+
+        .manage-profiles:hover {
+            border-color: white;
+            color: white;
+        }
+        .netflix-container {
+            display: none;
+            background-color: var(--netflix-dark);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        .navbar.scrolled {
+            background-color: var(--netflix-dark);
+        }
+
+        .logo {
+            height: 20px;
+        }
+
+        .nav-links {
+            display: none; 
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: var(--netflix-white);
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            padding-top: 60px;
+        }
+
+        .hero-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--netflix-dark) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 100%;
+        }
+
+        .hero-title {
+            max-width: 100%;
+            margin-bottom: 15px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .hero-info {
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-info .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hero-info .rating i {
+            color: #f5c518;
+        }
+
+        .hero-description {
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-buttons button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            width: auto;
+        }
+
+        .play-btn {
+            background-color: white;
+            color: black;
+        }
+
+        .info-btn {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+        }
+
+        .content {
+            padding: 20px;
+            margin-top: -100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content h2 {
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .slider-container {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: calc(50% - 5px);
+            gap: 10px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 5px 0;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+        .slider-item {
+            scroll-snap-align: start;
+            width: 100%;
+            transition: transform 0.3s ease;
+            position: relative;
+            aspect-ratio: 2/3;
+            cursor: pointer;
+        }
+
+        .slider-item:hover {
+            transform: scale(1.05);
+        }
+
+        .slider-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .continue-watching {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .continue-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .profile-icon {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        .movie-info {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+       
+        .movie-info h3 {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+       
+        .movie-info p {
+            font-size: 10px;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+       
+        .movie-info span {
+            font-size: 9px;
+            color: #ccc;
+        }
+       
+        .slider-item:hover .movie-info {
+            display: block;
+        }
+       
+        .movie-clip {
+            margin-top: 5px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+        }
+       
+        .movie-clip i {
+            margin-right: 3px;
+            color: var(--netflix-red);
+            font-size: 10px;
+        }
+       
+        .featured {
+            border: 2px solid var(--netflix-red);
+            position: relative;
+        }
+       
+        .featured::after {
+            content: "Destaque";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--netflix-red);
+            color: white;
+            padding: 2px 4px;
+            font-size: 8px;
+            border-radius: 2px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            width: 95%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-video {
+            width: 100%;
+            height: 200px;
+            background-color: #000;
+        }
+
+        .modal-info {
+            padding: 15px;
+            background-color: var(--netflix-dark);
+        }
+
+        .modal-info h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .modal-info p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: #ccc;
+            font-size: 12px;
+        }
+        .password-error {
+            color: var(--netflix-red);
+            font-size: 10px;
+            margin-top: 3px;
+            display: none;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        @media (min-width: 375px) {
+            .netflix-logo {
+                width: 140px;
+            }
+            
+            .profile-avatar {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .slider-container {
+                grid-auto-columns: calc(33.33% - 7px);
+            }
+        }
+
+        @media (min-width: 414px) {
+            .netflix-logo {
+                width: 150px;
+            }
+            
+            .login-box, .signup-box {
+                padding: 25px;
+            }
+            
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        @media (min-width: 480px) {
+            .slider-container {
+                grid-auto-columns: calc(25% - 8px);
+            }
+            
+            .profiles-container h1 {
+                font-size: 28px;
+            }
+            
+            .profile {
+                width: calc(33.33% - 15px);
+            }
+        }
+
+        @media (min-width: 600px) {
+            .netflix-logo {
+                width: 160px;
+            }
+            
+            .login-box, .signup-box {
+                padding: 30px;
+            }
+            
+            .profile-avatar {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .slider-container {
+                grid-auto-columns: calc(20% - 9px);
+            }
+            
+            .modal-video {
+                height: 300px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .netflix-logo {
+                width: 180px;
+            }
+            
+            .login-box, .signup-box {
+                padding: 40px;
+            }
+            
+            .profile {
+                width: calc(20% - 15px);
+            }
+            
+            .slider-container {
+                grid-auto-columns: calc(16.66% - 10px);
+            }
+            
+            .profiles-container h1 {
+                font-size: 32px;
+            }
+            
+            .hero-content {
+                max-width: 60%;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-description {
+                font-size: 16px;
+            }
+            
+            .hero-buttons button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            
+            .modal-video {
+                height: 400px;
+            }
+            
+            .nav-links {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-content {
+                max-width: 50%;
+            }
+            
+            .modal-video {
+                height: 500px;
+            }
+        }
+
+        @media (orientation: landscape) {
+            .login-container, .signup-container, .profiles-container {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            
+            .signup-box {
+                max-height: 80vh;
+            }
+            
+            .profiles-list {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .profile {
+                width: calc(20% - 15px);
+            }
+        }
+        @media only screen 
+            and (device-width: 375px) 
+            and (device-height: 812px) 
+            and (-webkit-device-pixel-ratio: 3) {
+            .login-container, .signup-container {
+                padding-top: 50px;
+            }
+        }
+        @media only screen 
+            and (min-device-width: 768px) 
+            and (max-device-width: 1024px) {
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .profiles-container h1 {
+                font-size: 36px;
+            }
+            
+            .hero-title {
+                font-size: 42px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginContainer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo" class="netflix-logo">
+        <div class="login-box">
+            <h2>Entrar</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Nome do Usuário</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Entrar</button>
+            </form>
+            <div class="login-link">
+                Novo por aqui? <a href="#" id="showSignup">Assine agora</a>.
+            </div>
+        </div>
+    </div>
+<div class="signup-container" id="signupContainer">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo" class="netflix-logo">
+        <div class="signup-box">
+            <h2>Criar sua conta</h2>
+            <p>Etapas para se tornar membro da Netflix.</p>
+            
+            <div class="signup-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Dados Pessoais</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Plano</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Pagamento</div>
+                </div>
+            </div>
+            
+            <form id="signupForm">
+                <div class="form-step active" data-step="1">
+                    <div class="input-group">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signupPassword">Senha</label>
+                        <input type="password" id="signupPassword" required>
+                        <div class="password-error" id="passwordError">A senha deve ter pelo menos 6 caracteres</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmPassword">Confirmar Senha</label>
+                        <input type="password" id="confirmPassword" required>
+                        <div class="password-error" id="confirmPasswordError">As senhas não coincidem</div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-secondary" disabled>Voltar</button>
+                        <button type="button" class="next-step">Próximo</button>
+                    </div>
+                </div>
+                <div class="form-step" data-step="2">
+                    <div class="plan-options">
+                        <div class="plan-option" data-plan="basic">
+                            <h3>Básico</h3>
+                            <div class="price">R$25,90/mês</div>
+                            <div class="description">Qualidade de vídeo boa. Assista no seu celular, tablet, computador ou TV.</div>
+                        </div>
+                        <div class="plan-option selected" data-plan="standard">
+                            <h3>Padrão</h3>
+                            <div class="price">R$39,90/mês</div>
+                            <div class="description">Qualidade de vídeo ótima. Assista em 2 dispositivos ao mesmo tempo.</div>
+                        </div>
+                        <div class="plan-option" data-plan="premium">
+                            <h3>Premium</h3>
+                            <div class="price">R$55,90/mês</div>
+                            <div class="description">Nossa melhor qualidade de vídeo. Assista em 4 dispositivos ao mesmo tempo.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-secondary prev-step">Voltar</button>
+                        <button type="button" class="next-step">Próximo</button>
+                    </div>
+                </div>
+                <div class="form-step" data-step="3">
+                    <div class="input-group">
+                        <label for="cardNumber">Número do Cartão</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cardName">Nome no Cartão</label>
+                        <input type="text" id="cardName" required>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label for="expiryDate">Data de Validade</label>
+                            <input type="text" id="expiryDate" placeholder="MM/AA" required>
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-method selected" data-method="credit">
+                            <i class="far fa-credit-card"></i>
+                            <div class="details">
+                                <h3>Cartão de Crédito</h3>
+                                <p>Visa, Mastercard, American Express</p>
+                            </div>
+                        </div>
+                        <div class="payment-method" data-method="paypal">
+                            <i class="fab fa-paypal"></i>
+                            <div class="details">
+                                <h3>PayPal</h3>
+                                <p>Pague com sua conta PayPal</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="terms">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <label for="agreeTerms">Eu concordo com os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a> da Netflix.</label>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-secondary prev-step">Voltar</button>
+                        <button type="submit" id="submitForm">Finalizar Cadastro</button>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="login-link">
+                Já tem uma conta? <a href="#" id="showLogin">Faça login - (Tela de Cadastro)</a>.
+            </div>
+        </div>
+    </div>
+
+    <div class="profiles-container" id="profilesContainer">
+        <h1>Quem está assistindo?</h1>
+        <div class="profiles-list">
+            <div class="profile">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Perfil 1">
+                </div>
+                <div class="profile-name">João</div>
+            </div>
+            <div class="profile">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Perfil 2">
+                </div>
+                <div class="profile-name">Maria</div>
+            </div>
+            <div class="profile">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Perfil 3">
+                </div>
+                <div class="profile-name">Pedro</div>
+            </div>
+            <div class="profile">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="Perfil 4">
+                </div>
+                <div class="profile-name">Ana</div>
+            </div>
+            <div class="profile">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="Perfil 5">
+                </div>
+                <div class="profile-name">Fernando</div>
+            </div>
+        </div>
+        <button class="manage-profiles">Gerenciar perfis</button>
+    </div>
+    <div class="netflix-container" id="netflixContainer">
+        <div class="navbar" id="navbar">
+            <div class="navbar-left">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo" class="logo">
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#">Início</a>
+                <a href="#">Séries</a>
+                <a href="#">Filmes</a>
+                <a href="#">Bombando</a>
+                <a href="#">Minha lista</a>
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="hero-gradient"></div>
+            <img src="https://image.tmdb.org/t/p/original/9dKCd55IuTT5QRs989m9Qlb7d2B.jpg" alt="Duna" class="hero-background">
+            <div class="hero-content">
+                <h1 class="hero-title">Duna: Parte Dois</h1>
+                <div class="hero-info">
+                    <span>2024 • 2h 46min • Ficção Científica, Aventura</span>
+                    <span class="rating"><i class="fas fa-star"></i> 8.9/10</span>
+                </div>
+                <div class="hero-description">
+                    <p>Paul Atreides se une a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família. Enfrentando uma escolha entre o amor de sua vida e o destino do universo, ele deve evitar um futuro terrível que só ele pode prever.</p>
+                </div>
+                <div class="hero-buttons">
+                    <button class="play-btn"><i class="fas fa-play"></i> Assistir</button>
+                    <button class="info-btn"><i class="fas fa-info-circle"></i> Mais informações</button>
+                    <button class="scene-btn" data-movie="duna"><i class="fas fa-film"></i> Cenas</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="continue-watching">
+                <div class="continue-profile">
+                    <div class="profile-icon">L</div>
+                    <span>Continuar assistindo:</span>
+                </div>
+                <div class="slider-container">
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" alt="Stranger Things">
+                        <div class="movie-info">
+                            <h3>Stranger Things</h3>
+                            <p>Um grupo de crianças se envolve em uma série de eventos sobrenaturais na pacata cidade de Hawkins. Eles enfrentam criaturas monstruosas, experiências secretas do governo e uma garota misteriosa com poderes telecinéticos.</p>
+                            <span>2016 • 4 temporadas • Drama, Fantasia</span>
+                            <div class="movie-clip" data-movie="stranger-things">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Eleven vs Demogorgon</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="The Witcher">
+                        <div class="movie-info">
+                            <h3>The Witcher</h3>
+                            <p>O solitário caçador de monstros Geralt de Rívia luta para encontrar seu lugar num mundo onde as pessoas muitas vezes são mais perversas que as criaturas selvagens.</p>
+                            <span>2019 • 3 temporadas • Fantasia, Ação</span>
+                            <div class="movie-clip" data-movie="witcher">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Luta na taverna</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/6kbAMLteGO8yyewYau6bJ683sw7.jpg" alt="Peaky Blinders">
+                        <div class="movie-info">
+                            <h3>Peaky Blinders</h3>
+                            <p>Thomas Shelby e seus irmãos retornam a Birmingham depois de servir no exército britânico durante a Primeira Guerra Mundial. Os Peaky Blinders, a gangue na qual eles estão envolvidos, são a mais temerária da cidade.</p>
+                            <span>2013 • 6 temporadas • Drama, Crime</span>
+                            <div class="movie-clip" data-movie="peaky-blinders">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Discurso de Thomas Shelby</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/5bFK5d3mVTAvBCXi5NPWH0tYjKl.jpg" alt="Breaking Bad">
+                        <div class="movie-info">
+                            <h3>Breaking Bad</h3>
+                            <p>O professor de química Walter White descobre que tem câncer terminal. Para garantir o futuro da família, ele começa a produzir e vender metanfetamina com um ex-aluno.</p>
+                            <span>2008 • 5 temporadas • Drama, Crime</span>
+                            <div class="movie-clip" data-movie="breaking-bad">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: "I am the danger"</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" alt="The Crown">
+                        <div class="movie-info">
+                            <h3>The Crown</h3>
+                            <p>Este drama acompanha a vida da rainha Elizabeth II e dos primeiros-ministros britânicos que moldaram o pós-guerra, retratando eventos que alteraram o curso do século XX.</p>
+                            <span>2016 • 6 temporadas • Drama, História</span>
+                            <div class="movie-clip" data-movie="the-crown">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Coroação</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/6f5GbJ5sZ5SQxceN9A3lfx6moee.jpg" alt="House of the Dragon">
+                        <div class="movie-info">
+                            <h3>House of the Dragon</h3>
+                            <p>A história da Casa Targaryen, 200 anos antes dos eventos de Game of Thrones, quando o reinado de Targaryen estava no auge.</p>
+                            <span>2022 • 1 temporada • Fantasia, Drama</span>
+                            <div class="movie-clip" data-movie="hotd">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Coroação de Rhaenyra</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Filmes em destaque</h2>
+                <div class="slider-container">
+                    <div class="slider-item featured">
+                        <img src="https://image.tmdb.org/t/p/w500/9dKCd55IuTT5QRs989m9Qlb7d2B.jpg" alt="Duna">
+                        <div class="movie-info">
+                            <h3>Duna: Parte Dois</h3>
+                            <p>Paul Atreides se une a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família. Enfrentando uma escolha entre o amor de sua vida e o destino do universo, ele deve evitar um futuro terrível que só ele pode prever.</p>
+                            <span>2024 • 2h 46min • Ficção Científica</span>
+                            <div class="movie-clip" data-movie="duna">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Ataque dos Sardaukar</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/ySgY4jBvZ6qchrxKnBg4M8tZp8V.jpg" alt="Jungle Cruise">
+                        <div class="movie-info">
+                            <h3>Jungle Cruise</h3>
+                            <p>Baseado no famoso passeio de Disneyland, o filme segue um capitão de barco e uma cientista em uma aventura pela selva em busca de uma árvore com poderes de cura lendários.</p>
+                            <span>2021 • 2h 7min • Aventura, Fantasia</span>
+                            <div class="movie-clip" data-movie="jungle-cruise">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Corrida pelas corredeiras</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="The Batman">
+                        <div class="movie-info">
+                            <h3>The Batman</h3>
+                            <p>Quando um assassino visa a elite de Gotham com uma série de maquinações sádicas, um rastro de pistas crípticas leva Batman a uma investigação no submundo.</p>
+                            <span>2022 • 2h 56min • Ação, Crime</span>
+                            <div class="movie-clip" data-movie="batman">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Perseguição de carro</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home">
+                        <div class="movie-info">
+                            <h3>Spider-Man: No Way Home</h3>
+                            <p>Peter Parker pede ajuda ao Doutor Estranho para tornar sua identidade como Homem-Aranha um segredo novamente. O feitiço dá terrivelmente errado.</p>
+                            <span>2021 • 2h 28min • Ação, Aventura</span>
+                            <div class="movie-clip" data-movie="spiderman">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Encontro dos Spider-Mans</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/7G2VvG1lU8q758uOqU6z2Ds0qpA.jpg" alt="Red Notice">
+                        <div class="movie-info">
+                            <h3>Red Notice</h3>
+                            <p>Um agente do FBI persegue o ladrão de arte mais procurado do mundo com a ajuda de um rival imprevisível. A caçada os leva a uma jornada global em busca de um tesouro inestimável.</p>
+                            <span>2021 • 1h 58min • Ação, Comédia</span>
+                            <div class="movie-clip" data-movie="red-notice">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Fuga do museu</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/34m2tygAYBGqA9MXKhRDtzYd4MR.jpg" alt="The Gray Man">
+                        <div class="movie-info">
+                            <h3>The Gray Man</h3>
+                            <p>Um agente da CIA é desmascarado e passa a ser caçado internacionalmente por um ex-colega psicótico. Ele precisa usar todas as suas habilidades para sobreviver e proteger sua família.</p>
+                            <span>2022 • 2h 9min • Ação, Thriller</span>
+                            <div class="movie-clip" data-movie="gray-man">
+                                <i class="fas fa-play"></i> <span>Cena em destaque: Perseguição em Praga</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Cenas icônicas</h2>
+                <div class="slider-container">
+                    <div class="slider-item" data-movie="duna">
+                        <img src="https://image.tmdb.org/t/p/w500/6XYLiMxHAaCsoyrVo38LBWMw2p8.jpg" alt="Cena de Duna">
+                        <div class="movie-info">
+                            <h3>Duna</h3>
+                            <p>"O medo é o assassino da mente" - Treinamento com Gurney Halleck</p>
+                            <span>1:32 min</span>
+                        </div>
+                    </div>
+                    <div class="slider-item" data-movie="batman">
+                        <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="Cena de The Batman">
+                        <div class="movie-info">
+                            <h3>The Batman</h3>
+                            <p>Batman enfrenta o Pinguim na perseguição de carro</p>
+                            <span>3:45 min</span>
+                        </div>
+                    </div>
+                    <div class="slider-item" data-movie="hotd">
+                        <img src="https://image.tmdb.org/t/p/w500/z2yahl2uefxDCl0nogcRBstwruJ.jpg" alt="Cena de House of the Dragon">
+                        <div class="movie-info">
+                            <h3>House of the Dragon</h3>
+                            <p>Batalha entre dragões sobre Harrenhal</p>
+                            <span>4:12 min</span>
+                        </div>
+                    </div>
+                    <div class="slider-item" data-movie="stranger-things">
+                        <img src="https://image.tmdb.org/t/p/w500/7BsvSuDQuoqhWmU2fL7W2GOcZHU.jpg" alt="Cena de Stranger Things">
+                        <div class="movie-info">
+                            <h3>Stranger Things</h3>
+                            <p>Eleven fecha o portal para o Mundo Invertido</p>
+                            <span>2:15 min</span>
+                        </div>
+                    </div>
+                    <div class="slider-item" data-movie="breaking-bad">
+                        <img src="https://image.tmdb.org/t/p/w500/5cnLoWq9o5tuLe1Zq4BTX4LwZ2B.jpg" alt="Cena de Breaking Bad">
+                        <div class="movie-info">
+                            <h3>Breaking Bad</h3>
+                            <p>"I am the one who knocks!" - Walter White</p>
+                            <span>1:45 min</span>
+                        </div>
+                    </div>
+                    <div class="slider-item" data-movie="witcher">
+                        <img src="https://image.tmdb.org/t/p/w500/9HT9982bzgN5on1sLRmc1GMn6ZC.jpg" alt="Cena de The Witcher">
+                        <div class="movie-info">
+                            <h3>The Witcher</h3>
+                            <p>Geralt luta contra os bandidos na taverna</p>
+                            <span>3:22 min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Séries populares</h2>
+                <div class="slider-container">
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" alt="Stranger Things">
+                        <div class="movie-info">
+                            <h3>Stranger Things</h3>
+                            <p>Um grupo de crianças se envolve em uma série de eventos sobrenaturais na pacata cidade de Hawkins.</p>
+                            <span>2016 • 4 temporadas • Drama, Fantasia</span>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg" alt="The Witcher">
+                        <div class="movie-info">
+                            <h3>The Witcher</h3>
+                            <p>O solitário caçador de monstros Geralt de Rívia luta para encontrar seu lugar num mundo onde as pessoas muitas vezes são mais perversas que as criaturas selvagens.</p>
+                            <span>2019 • 3 temporadas • Fantasia, Ação</span>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/6kbAMLteGO8yyewYau6bJ683sw7.jpg" alt="Peaky Blinders">
+                        <div class="movie-info">
+                            <h3>Peaky Blinders</h3>
+                            <p>Thomas Shelby e seus irmãos retornam a Birmingham depois de servir no exército britânico durante a Primeira Guerra Mundial.</p>
+                            <span>2013 • 6 temporadas • Drama, Crime</span>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/5bFK5d3mVTAvBCXi5NPWH0tYjKl.jpg" alt="Breaking Bad">
+                        <div class="movie-info">
+                            <h3>Breaking Bad</h3>
+                            <p>O professor de química Walter White descobre que tem câncer terminal. Para garantir o futuro da família, ele começa a produzir e vender metanfetamina.</p>
+                            <span>2008 • 5 temporadas • Drama, Crime</span>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" alt="The Crown">
+                        <div class="movie-info">
+                            <h3>The Crown</h3>
+                            <p>Este drama acompanha a vida da rainha Elizabeth II e dos primeiros-ministros britânicos que moldaram o pós-guerra.</p>
+                            <span>2016 • 6 temporadas • Drama, História</span>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <img src="https://image.tmdb.org/t/p/w500/6f5GbJ5sZ5SQxceN9A3lfx6moee.jpg" alt="House of the Dragon">
+                        <div class="movie-info">
+                            <h3>House of the Dragon</h3>
+                            <p>A história da Casa Targaryen, 200 anos antes dos eventos de Game of Thrones, quando o reinado de Targaryen estava no auge.</p>
+                            <span>2022 • 1 temporada • Fantasia, Drama</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-video" id="modalVideo">
+            </div>
+            <div class="modal-info" id="modalInfo">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const validCredentials = {
+            username: 'admin',
+            password: 'admin123',
+            specialCodes: ['LIX', 'ALLOFUS', 'AREDLAE', 'JUNGLE CRUISE']
+        };
+        const movieData = {
+            'duna': {
+                title: 'Duna: Parte Dois',
+                description: 'Paul Atreides se une a Chani e aos Fremen enquanto busca vingança contra os conspiradores que destruíram sua família. Enfrentando uma escolha entre o amor de sua vida e o destino do universo, ele deve evitar um futuro terrível que só ele pode prever.',
+                year: '2024',
+                duration: '2h 46min',
+                genre: 'Ficção Científica, Aventura',
+                rating: '8.9/10',
+                videoId: 'U2Qp5pL3ovA',
+                sceneDescription: '"O medo é o assassino da mente" - Treinamento com Gurney Halleck'
+            },
+            'jungle-cruise': {
+                title: 'Jungle Cruise',
+                description: 'Baseado no famoso passeio de Disneyland, o filme segue um capitão de barco e uma cientista em uma aventura pela selva em busca de uma árvore com poderes de cura lendários.',
+                year: '2021',
+                duration: '2h 7min',
+                genre: 'Aventura, Fantasia',
+                rating: '6.6/10',
+                videoId: 'f_HvoipFcA8',
+                sceneDescription: 'Corrida pelas corredeiras'
+            },
+            'batman': {
+                title: 'The Batman',
+                description: 'Quando um assassino visa a elite de Gotham com uma série de maquinações sádicas, um rastro de pistas crípticas leva Batman a uma investigação no submundo.',
+                year: '2022',
+                duration: '2h 56min',
+                genre: 'Ação, Crime',
+                rating: '7.9/10',
+                videoId: 'mqqft2x_Aa4',
+                sceneDescription: 'Perseguição de carro com o Pinguim'
+            },
+            'stranger-things': {
+                title: 'Stranger Things',
+                description: 'Um grupo de crianças se envolve em uma série de eventos sobrenaturais na pacata cidade de Hawkins.',
+                year: '2016',
+                duration: '4 temporadas',
+                genre: 'Drama, Fantasia',
+                rating: '8.7/10',
+                videoId: 'yQEondeGvKo',
+                sceneDescription: 'Eleven fecha o portal para o Mundo Invertido'
+            },
+            'breaking-bad': {
+                title: 'Breaking Bad',
+                description: 'O professor de química Walter White descobre que tem câncer terminal. Para garantir o futuro da família, ele começa a produzir e vender metanfetamina.',
+                year: '2008',
+                duration: '5 temporadas',
+                genre: 'Drama, Crime',
+                rating: '9.5/10',
+                videoId: 'Xa8QhZPE5mU',
+                sceneDescription: '"I am the one who knocks!" - Walter White'
+            },
+            'witcher': {
+                title: 'The Witcher',
+                description: 'O solitário caçador de monstros Geralt de Rívia luta para encontrar seu lugar num mundo onde as pessoas muitas vezes são mais perversas que as criaturas selvagens.',
+                year: '2019',
+                duration: '3 temporadas',
+                genre: 'Fantasia, Ação',
+                rating: '8.2/10',
+                videoId: 'ndl1W4ltcmg',
+                sceneDescription: 'Geralt luta contra os bandidos na taverna'
+            },
+            'hotd': {
+                title: 'House of the Dragon',
+                description: 'A história da Casa Targaryen, 200 anos antes dos eventos de Game of Thrones, quando o reinado de Targaryen estava no auge.',
+                year: '2022',
+                duration: '1 temporada',
+                genre: 'Fantasia, Drama',
+                rating: '8.5/10',
+                videoId: 'DotnJ7tTA34',
+                sceneDescription: 'Batalha entre dragões sobre Harrenhal'
+            }
+        };
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if ((username === validCredentials.username && password === validCredentials.password) ||
+                validCredentials.specialCodes.includes(password)) {
+                document.getElementById('loginContainer').style.display = 'none';
+               
+                if (password === 'JUNGLE CRUISE') {
+                    document.getElementById('profilesContainer').style.display = 'none';
+                    document.getElementById('netflixContainer').style.display = 'block';
+                } else {
+                    document.getElementById('profilesContainer').style.display = 'block';
+                }
+            } else {
+                alert('Credenciais inválidas.');
+            }
+        });
+        document.getElementById('showSignup').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('signupContainer').style.display = 'flex';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('signupContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'flex';
+        });
+        document.querySelectorAll('.profile').forEach(profile => {
+            profile.addEventListener('click', function() {
+                document.getElementById('profilesContainer').style.display = 'none';
+                document.getElementById('netflixContainer').style.display = 'block';
+            });
+        });
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('.slider-container').forEach(container => {
+            let isDown = false;
+            let startX, scrollLeft;
+
+            container.addEventListener('mousedown', e => {
+                isDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+                container.style.cursor = 'grabbing';
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mousemove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2;
+                container.scrollLeft = scrollLeft - walk;
+            });
+   container.addEventListener('touchstart', e => {
+                isDown = true;
+                startX = e.touches[0].pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('touchend', () => {
+                isDown = false;
+            });
+
+            container.addEventListener('touchmove', e => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - container.offsetLeft;
+                const walk = (x - startX) * 2;
+                container.scrollLeft = scrollLeft - walk;
+            });
+        });
+        const modal = document.getElementById('movieModal');
+        const modalVideo = document.getElementById('modalVideo');
+        const modalInfo = document.getElementById('modalInfo');
+        const closeModal = document.querySelector('.close-modal');
+         function openModal(movieId) {
+            const movie = movieData[movieId];
+           
+            if (!movie) {
+                console.error('Filme não encontrado:', movieId);
+                return;
+            }
+          modalInfo.innerHTML = `
+                <h3>${movie.title}</h3>
+                <p><strong>Cena:</strong> ${movie.sceneDescription || movie.description}</p>
+                <div class="modal-meta">
+                    <span>${movie.year}</span>
+                    <span>${movie.duration}</span>
+                    <span>${movie.genre}</span>
+                    <span><i class="fas fa-star"></i> ${movie.rating}</span>
+                </div>
+            `;
+            modalVideo.innerHTML = `
+                <div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center;background:#000;">
+                    <div style="text-align:center;">
+                        <i class="fas fa-play-circle" style="font-size:50px;color:#e50914;margin-bottom:20px;"></i>
+                        <p>Reproduzindo cena de ${movie.title}</p>
+                        <p style="font-size:12px;color:#777;">(Simulação - em produção real seria incorporado o vídeo)</p>
+                    </div>
+                </div>
+            `;
+           
+            modal.style.display = 'flex';
+        }
+        document.querySelectorAll('[data-movie]').forEach(item => {
+            item.addEventListener('click', function() {
+                const movieId = this.getAttribute('data-movie');
+                openModal(movieId);
+            });
+        });
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        function validatePersonalData() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            passwordError.style.display = 'none';
+            confirmPasswordError.style.display = 'none';
+            
+            let isValid = true;
+            
+            if (!name) {
+                alert('Por favor, insira seu nome completo.');
+                isValid = false;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                alert('Por favor, insira um email válido.');
+                isValid = false;
+            }
+            
+            if (password.length < 6) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (password !== confirmPassword) {
+                confirmPasswordError.style.display = 'block';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        function validatePlanSelection() {
+            const selectedPlan = document.querySelector('.plan-option.selected');
+            if (!selectedPlan) {
+                alert('Por favor, selecione um plano.');
+                return false;
+            }
+            return true;
+        }
+        function validateCreditCard() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardName = document.getElementById('cardName').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            if (!/^\d{16}$/.test(cardNumber)) {
+                alert('Por favor, insira um número de cartão válido (16 dígitos).');
+                return false;
+            }
+            
+            if (!cardName) {
+                alert('Por favor, insira o nome como aparece no cartão.');
+                return false;
+            }
+            
+            if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                alert('Por favor, insira uma data de validade no formato MM/AA.');
+                return false;
+            }
+            
+            if (!/^\d{3,4}$/.test(cvv)) {
+                alert('Por favor, insira um CVV válido (3 ou 4 dígitos).');
+                return false;
+            }
+            
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('Você deve concordar com os Termos de Uso e Política de Privacidade.');
+                return false;
+            }
+            
+            return true;
+        }
+        document.querySelectorAll('.next-step').forEach(button => {
+            button.addEventListener('click', function() {
+                const currentStep = document.querySelector('.form-step.active');
+                const currentStepNumber = parseInt(currentStep.dataset.step);
+                const nextStepNumber = currentStepNumber + 1;
+                if (currentStepNumber === 1 && !validatePersonalData()) {
+                    return; 
+                }
+                if (currentStepNumber === 2 && !validatePlanSelection()) {
+                    return;
+                }
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('active');
+                    if (parseInt(step.dataset.step) <= nextStepNumber) {
+                        step.classList.add('active');
+                    }
+                });
+                currentStep.classList.remove('active');
+                document.querySelector(`.form-step[data-step="${nextStepNumber}"]`).classList.add('active')
+                updateNavigationButtons(nextStepNumber);
+            });
+        });
+        
+        document.querySelectorAll('.prev-step').forEach(button => {
+            button.addEventListener('click', function() {
+                const currentStep = document.querySelector('.form-step.active');
+                const currentStepNumber = parseInt(currentStep.dataset.step);
+                const prevStepNumber = currentStepNumber - 1;
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('active');
+                    if (parseInt(step.dataset.step) <= prevStepNumber) {
+                        step.classList.add('active');
+                    }
+                });
+                currentStep.classList.remove('active');
+                document.querySelector(`.form-step[data-step="${prevStepNumber}"]`).classList.add('active');
+                updateNavigationButtons(prevStepNumber);
+            });
+        });
+        
+        function updateNavigationButtons(stepNumber) {
+            const prevButtons = document.querySelectorAll('.prev-step');
+            const nextButtons = document.querySelectorAll('.next-step');
+            
+            if (stepNumber === 1) {
+                prevButtons.forEach(btn => btn.disabled = true);
+                nextButtons.forEach(btn => {
+                    btn.textContent = 'Próximo';
+                    btn.classList.remove('submit-btn');
+                });
+            } else if (stepNumber === 2) {
+                prevButtons.forEach(btn => btn.disabled = false);
+                nextButtons.forEach(btn => {
+                    btn.textContent = 'Próximo';
+                    btn.classList.remove('submit-btn');
+                });
+            } else if (stepNumber === 3) {
+                prevButtons.forEach(btn => btn.disabled = false);
+                nextButtons.forEach(btn => {
+                    btn.textContent = 'Finalizar Cadastro';
+                    btn.classList.add('submit-btn');
+                });
+            }
+        }
+        document.querySelectorAll('.plan-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.plan-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                document.querySelectorAll('.payment-method').forEach(mtd => mtd.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateCreditCard()) return;
+    alert('Cadastro realizado com sucesso! Redirecionando para a página de login...');
+            document.getElementById('signupContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'flex';
+        });
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = this.value.replace(/\s/g, '');
+            if (value.length > 16) value = value.substr(0, 16);
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += ' ';
+                formatted += value[i];
+            }
+            this.value = formatted;
+        });
+        
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 4) value = value.substr(0, 4);
+            if (value.length > 2) {
+                value = value.substr(0, 2) + '/' + value.substr(2);
+            }
+            this.value = value;
+        });
+        
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').substr(0, 4);
+        });
+        document.getElementById('signupPassword').addEventListener('input', function() {
+            const password = this.value;
+            const passwordError = document.getElementById('passwordError');
+            
+            if (password.length < 6 && password.length > 0) {
+                passwordError.style.display = 'block';
+            } else {
+                passwordError.style.display = 'none';
+            }
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            
+            if (password !== confirmPassword && confirmPassword.length > 0) {
+                confirmPasswordError.style.display = 'block';
+            } else {
+                confirmPasswordError.style.display = 'none';
+            }
+        });
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = this.value;
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            
+            if (password !== confirmPassword && confirmPassword.length > 0) {
+                confirmPasswordError.style.display = 'block';
+            } else {
+                confirmPasswordError.style.display = 'none';
+            }
+        });
+ document.getElementById('menuToggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('navLinks');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+            }
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('navLinks').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
