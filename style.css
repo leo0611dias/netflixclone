@@ -1,0 +1,948 @@
+:root {
+    --netflix-red: #e50914;
+    --netflix-dark: #141414;
+    --netflix-gray: #303030;
+    --netflix-light-gray: #757575;
+    --netflix-white: #fff;
+    --primary: #0ff;
+    --dark: #111;
+    --light: #fff;
+    --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #000;
+    color: var(--netflix-white);
+    overflow-x: hidden;
+}
+.login-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    padding: 20px;
+}
+
+.netflix-logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+.login-box {
+    background-color: rgba(0,0,0,0.8);
+    padding: 20px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.login-box h2 {
+    color: var(--netflix-white);
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.input-group {
+    margin-bottom: 16px;
+    text-align: left;
+    position: relative;
+}
+
+.input-group label {
+    color: var(--netflix-light-gray);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #333;
+    border: none;
+    border-radius: 4px;
+    color: var(--netflix-white);
+    font-size: 16px;
+}
+
+input:focus {
+    background-color: #454545;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--netflix-red);
+    border: none;
+    border-radius: 4px;
+    color: var(--netflix-white);
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #f40612;
+}
+.signup-container {
+    display: none;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: var(--netflix-white);
+    padding: 20px;
+}
+
+.signup-box {
+    background-color: rgba(0,0,0,0.8);
+    padding: 20px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.signup-box h2 {
+    color: var(--netflix-white);
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.signup-box p {
+    color: var(--netflix-light-gray);
+    text-align: left;
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.signup-steps {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+.step {
+    width: 30%;
+    text-align: center;
+    position: relative;
+}
+
+.step-number {
+    width: 25px;
+    height: 25px;
+    background-color: var(--netflix-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    color: var(--netflix-light-gray);
+    font-size: 12px;
+}
+
+.step.active .step-number {
+    background-color: var(--netflix-red);
+    color: white;
+}
+
+.step-title {
+    font-size: 10px;
+    color: var(--netflix-light-gray);
+}
+
+.step.active .step-title {
+    color: white;
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: -35%;
+    width: 70%;
+    height: 2px;
+    background-color: var(--netflix-gray);
+}
+
+.step.active:not(:last-child)::after {
+    background-color: var(--netflix-red);
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.plan-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.plan-option {
+    border: 1px solid var(--netflix-gray);
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.plan-option:hover {
+    border-color: var(--netflix-light-gray);
+}
+
+.plan-option.selected {
+    border-color: var(--netflix-red);
+    background-color: rgba(229, 9, 20, 0.1);
+}
+
+.plan-option h3 {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.plan-option .price {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.plan-option .description {
+    font-size: 12px;
+    color: var(--netflix-light-gray);
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.payment-method {
+    border: 1px solid var(--netflix-gray);
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-method:hover {
+    border-color: var(--netflix-light-gray);
+}
+
+.payment-method.selected {
+    border-color: var(--netflix-red);
+    background-color: rgba(229, 9, 20, 0.1);
+}
+
+.payment-method i {
+    font-size: 20px;
+}
+
+.payment-method .details h3 {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.payment-method .details p {
+    font-size: 12px;
+    color: var(--netflix-light-gray);
+    margin: 0;
+}
+
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--netflix-light-gray);
+    color: var(--netflix-light-gray);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.terms {
+    font-size: 10px;
+    color: var(--netflix-light-gray);
+    margin-top: 15px;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+}
+
+.terms input {
+    margin-right: 8px;
+    margin-top: 2px;
+}
+
+.terms a {
+    color: var(--netflix-white);
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+.login-link {
+    margin-top: 15px;
+    color: var(--netflix-light-gray);
+    font-size: 14px;
+}
+
+.login-link a {
+    color: white;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+.password-error {
+    color: var(--netflix-red);
+    font-size: 10px;
+    margin-top: 3px;
+    display: none;
+}
+.profiles-container {
+    display: none;
+    height: 100vh;
+    background-color: #000;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    padding-top: 80px;
+}
+
+.profiles-container h1 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+.profiles-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: 0 auto 40px;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    color: var(--netflix-light-gray);
+    font-size: 14px;
+}
+
+.profile:hover .profile-name {
+    color: white;
+}
+
+.manage-profiles {
+    border: 1px solid var(--netflix-light-gray);
+    color: var(--netflix-light-gray);
+    padding: 8px 15px;
+    font-size: 14px;
+    background: transparent;
+    cursor: pointer;
+    width: auto;
+    margin: 0 auto;
+}
+
+.manage-profiles:hover {
+    border-color: white;
+    color: white;
+}
+.netflix-container {
+    display: none;
+    background-color: var(--netflix-dark);
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 15px 4%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+
+.navbar.scrolled {
+    background-color: var(--netflix-dark);
+}
+
+.logo {
+    height: 20px;
+}
+
+.nav-links {
+    display: none;
+    gap: 15px;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 4%;
+    background-color: var(--netflix-dark);
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.nav-links.show {
+    display: flex;
+}
+
+.nav-links a {
+    color: var(--netflix-white);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 0;
+}
+
+.menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    padding-top: 60px;
+}
+
+.hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, var(--netflix-dark) 0%, transparent 50%);
+    z-index: 1;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+}
+
+.hero-title {
+    max-width: 100%;
+    margin-bottom: 15px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.hero-info {
+    margin-bottom: 15px;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.hero-info .rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hero-info .rating i {
+    color: #f5c518;
+}
+
+.hero-description {
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.hero-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    width: auto;
+}
+
+.play-btn {
+    background-color: white;
+    color: black;
+}
+
+.info-btn {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: white;
+}
+
+.content {
+    padding: 20px;
+    margin-top: -100px;
+    position: relative;
+    z-index: 2;
+}
+
+.content-section {
+    margin-bottom: 30px;
+}
+
+.content h2 {
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.slider-container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(50% - 5px);
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 5px 0;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none;
+}
+
+.slider-item {
+    scroll-snap-align: start;
+    width: 100%;
+    transition: transform 0.3s ease;
+    position: relative;
+    aspect-ratio: 2/3;
+    cursor: pointer;
+}
+
+.slider-item:hover {
+    transform: scale(1.05);
+}
+
+.slider-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.continue-watching {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+.continue-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.profile-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+.movie-info {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+    padding: 10px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.movie-info h3 {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.movie-info p {
+    font-size: 10px;
+    margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-info span {
+    font-size: 9px;
+    color: #ccc;
+}
+
+.slider-item:hover .movie-info {
+    display: block;
+}
+
+.movie-clip {
+    margin-top: 5px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.movie-clip i {
+    margin-right: 3px;
+    color: var(--netflix-red);
+    font-size: 10px;
+}
+
+.featured {
+    border: 2px solid var(--netflix-red);
+    position: relative;
+}
+
+.featured::after {
+    content: "Destaque";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--netflix-red);
+    color: white;
+    padding: 2px 4px;
+    font-size: 8px;
+    border-radius: 2px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    width: 95%;
+    max-width: 900px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-video {
+    width: 100%;
+    height: 200px;
+    background-color: #000;
+}
+
+.modal-info {
+    padding: 15px;
+    background-color: var(--netflix-dark);
+}
+
+.modal-info h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.modal-info p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.modal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #ccc;
+    font-size: 12px;
+}
+@media (min-width: 375px) {
+    .netflix-logo {
+        width: 140px;
+    }
+    
+    .profile-avatar {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .slider-container {
+        grid-auto-columns: calc(33.33% - 7px);
+    }
+}
+
+@media (min-width: 414px) {
+    .netflix-logo {
+        width: 150px;
+    }
+    
+    .login-box, .signup-box {
+        padding: 25px;
+    }
+    
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (min-width: 480px) {
+    .slider-container {
+        grid-auto-columns: calc(25% - 8px);
+    }
+    
+    .profiles-container h1 {
+        font-size: 28px;
+    }
+    
+    .profile {
+        width: calc(33.33% - 15px);
+    }
+}
+
+@media (min-width: 600px) {
+    .netflix-logo {
+        width: 160px;
+    }
+    
+    .login-box, .signup-box {
+        padding: 30px;
+    }
+    
+    .profile-avatar {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .slider-container {
+        grid-auto-columns: calc(20% - 9px);
+    }
+    
+    .modal-video {
+        height: 300px;
+    }
+}
+
+@media (min-width: 768px) {
+    .netflix-logo {
+        width: 180px;
+    }
+    
+    .login-box, .signup-box {
+        padding: 40px;
+    }
+    
+    .profile {
+        width: calc(20% - 15px);
+    }
+    
+    .slider-container {
+        grid-auto-columns: calc(16.66% - 10px);
+    }
+    
+    .profiles-container h1 {
+        font-size: 32px;
+    }
+    
+    .hero-content {
+        max-width: 60%;
+    }
+    
+    .hero-title {
+        font-size: 36px;
+    }
+    
+    .hero-description {
+        font-size: 16px;
+    }
+    
+    .hero-buttons button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+    
+    .modal-video {
+        height: 400px;
+    }
+    
+    .nav-links {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        background-color: transparent;
+        padding: 0;
+    }
+    
+    .menu-toggle {
+        display: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    .hero-content {
+        max-width: 50%;
+    }
+    
+    .modal-video {
+        height: 500px;
+    }
+}
+
+@media (orientation: landscape) {
+    .login-container, .signup-container, .profiles-container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
+    .signup-box {
+        max-height: 80vh;
+    }
+    
+    .profiles-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .profile {
+        width: calc(20% - 15px);
+    }
+}
+@media only screen 
+    and (device-width: 375px) 
+    and (device-height: 812px) 
+    and (-webkit-device-pixel-ratio: 3) {
+    .login-container, .signup-container {
+        padding-top: 50px;
+    }
+}
+@media only screen 
+    and (min-device-width: 768px) 
+    and (max-device-width: 1024px) {
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .profiles-container h1 {
+        font-size: 36px;
+    }
+    
+    .hero-title {
+        font-size: 42px;
+    }
+}
