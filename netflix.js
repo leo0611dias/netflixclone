@@ -1,6 +1,6 @@
 const validCredentials = {
-    username: 'user',
-    password: '123456',
+    username: 'admin',
+    password: 'admin123',
     specialCodes: ['LIX', 'ALLOFUS', 'AREDLAE', 'JUNGLE CRUISE']
 };
 const movieData = {
